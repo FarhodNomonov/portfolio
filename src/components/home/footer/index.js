@@ -41,6 +41,7 @@ function Footer() {
           className="git"
           target={"_blank"}
           href={"https://github.com/FarhodNomonov"}
+          rel="noopener noreferrer" 
         >
           <Github />
         </a>

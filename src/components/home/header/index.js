@@ -38,7 +38,7 @@ export default function Header() {
       </nav>
       <div className="header_d_flex">
         <div className="header_contact">
-          <a target={"_blank"} href={"https://github.com/FarhodNomonov"}>
+          <a target={"_blank"} rel="noopener noreferrer" href={"https://github.com/FarhodNomonov"}>
             <Github />
           </a>
         </div>
