@@ -3,8 +3,6 @@ import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import Loader from "../loader";
-import Services from "../../../services/api";
-import CONSTANTS from "../../../config/constants";
 
 function Modal({ onClose }) {
   const [loader, setLoader] = useState(false);
@@ -22,32 +20,30 @@ function Modal({ onClose }) {
     false: {},
   };
 
-  const { TELEGRAM_API, BOT_TOKEN, CHAT_ID, BOT_CHAT_TYPE } = CONSTANTS;
 
   const onSubmit = (data) => {
-    const [w, f, e, m] = [
-      `nomonovfarhod.uz 🎯%0A`,
-      `Name: ${data.first_name}%0A`,
-      `Email: ${data.email}%0A`,
-      `Message: ${data.message}%0A`,
-    ];
-    const botMessege = w + f + e + m;
-    setLoader(true);
-    Services.getRequest(
-      `${TELEGRAM_API}/${BOT_TOKEN}/sendMessage?${CHAT_ID}&text=${botMessege}&${BOT_CHAT_TYPE}`
-    ).then(({ data }) => {
-      if (data?.ok) {
+  setLoader(true);
+  fetch("/api/send-message", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      if (result?.ok) {
         toast.success(<FormattedMessage id="app.contactme_scc" />);
-        setLoader(false);
         onClose();
         reset();
-      }
-      if (!data?.ok) {
+      } else {
         toast.error(<FormattedMessage id="app.contactme_err" />);
-        setLoader(false);
       }
+      setLoader(false);
+    })
+    .catch(() => {
+      toast.error(<FormattedMessage id="app.contactme_err" />);
+      setLoader(false);
     });
-  };
+};
 
   return (
     <>

@@ -39,7 +39,7 @@ function Footer() {
         </a>
         <a
           className="git"
-          target={"blank"}
+          target={"_blank"}
           href={"https://github.com/FarhodNomonov"}
         >
           <Github />

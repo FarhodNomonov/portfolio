@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Logo, Github, AllSvg } from "../../../assets/export/icons";
 import { Context } from "../../Wrapper";
 import { FormattedMessage } from "react-intl";
@@ -13,9 +13,9 @@ export default function Header() {
   };
   const { MdKeyboardArrowDown } = AllSvg;
 
-  window.onload = function () {
-    document.body.style.overflowY = Menu ? "hidden" : "auto";
-  };
+     useEffect(() => {
+     document.body.style.overflowY = Menu ? "hidden" : "auto";
+   }, [Menu]);
   return (
     <div className={Menu ? "active header" : "header"}>
       <div className="header_logo">
@@ -38,7 +38,7 @@ export default function Header() {
       </nav>
       <div className="header_d_flex">
         <div className="header_contact">
-          <a target={"blank"} href={"https://github.com/FarhodNomonov"}>
+          <a target={"_blank"} href={"https://github.com/FarhodNomonov"}>
             <Github />
           </a>
         </div>
