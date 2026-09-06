@@ -2,9 +2,12 @@ import { useContext, useState, useEffect } from "react";
 import { Logo, Github, AllSvg } from "../../../assets/export/icons";
 import { Context } from "../../Wrapper";
 import { FormattedMessage } from "react-intl";
+import useTheme from "../../../hooks/useTheme";
+import { BsSun, BsMoon } from "react-icons/bs";
 
 export default function Header() {
   const context = useContext(Context);
+  const { theme, toggleTheme } = useTheme();
   const [Menu, setMenu] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
 
@@ -47,6 +50,9 @@ export default function Header() {
             <p>{context.locale === "ru-RU" ? "Ru" : context.locale}</p>
             <MdKeyboardArrowDown />
           </div>
+         <button onClick={toggleTheme} className="theme_toggle">
+  {theme === "dark" ? <BsSun /> : <BsMoon />}
+</button>
           <div
             onClick={ViziblyPopup}
             className={`select_custome ${openPopup ? "active" : ""}`}
