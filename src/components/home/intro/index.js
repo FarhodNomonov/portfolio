@@ -1,5 +1,5 @@
 import IntroImg from "../../../assets/img/intro_logo.png";
-import { FiDownload, FiArrowRight, FiChevronDown } from "react-icons/fi";
+import { FiArrowRight, FiChevronDown } from "react-icons/fi";
 import { FormattedMessage } from "react-intl";
 
 function Intro() {
@@ -34,19 +34,17 @@ function Intro() {
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
-              href="/cv/NomonovFarxodRu.pdf"
-              download="Nomonov-Farxod-CV"
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-transform hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
-            >
-              <FiDownload size={16} />
-              <FormattedMessage id="app.intro.download" />
-            </a>
-            <a
               href="#contact"
-              className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-700 transition-colors hover:border-indigo-400 hover:text-indigo-500 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-indigo-400 dark:hover:text-indigo-400"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-transform hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
             >
               <FormattedMessage id="app.contactme" />
               <FiArrowRight size={16} />
+            </a>
+            <a
+              href="#experience"
+              className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-700 transition-colors hover:border-indigo-400 hover:text-indigo-500 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-indigo-400 dark:hover:text-indigo-400"
+            >
+              <FormattedMessage id="app.experience.eyebrow" />
             </a>
           </div>
         </div>
