@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scrolling for the anchor navigation in the navbar */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Every section's top anchor sits below the fixed navbar; this keeps
+   scrolled-to sections from being hidden underneath it. */
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+/* Reusable gradient text used for headings / accents across the site */
+.text-gradient {
+  @apply bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent;
+}
+
+/* Scroll-reveal: elements start hidden/offset, then transition in once
+   the useReveal hook adds the "is-visible" class (see src/hooks/useReveal.js). */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Thin, theme-aware scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-zinc-300 dark:bg-zinc-700;
+}

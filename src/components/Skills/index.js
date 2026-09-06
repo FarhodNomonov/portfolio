@@ -1,107 +1,67 @@
-import { AllSvg } from "../../assets/export/icons";
+import { AiFillHtml5 } from "react-icons/ai";
+import { DiCss3Full, DiReact } from "react-icons/di";
+import { SiJavascript, SiGit } from "react-icons/si";
+import useReveal from "../../hooks/useReveal";
 
-function index() {
-  const { AiFillHtml5, AiFillGithub, DiCss3Full, DiReact, SiJavascript } =
-    AllSvg;
+const SKILLS = [
+  { name: "HTML", percent: 95, icon: AiFillHtml5, color: "text-orange-500" },
+  { name: "CSS/SCSS", percent: 95, icon: DiCss3Full, color: "text-blue-500" },
+  { name: "JavaScript", percent: 80, icon: SiJavascript, color: "text-yellow-400" },
+  { name: "ReactJS", percent: 90, icon: DiReact, color: "text-cyan-400" },
+  { name: "Git", percent: 90, icon: SiGit, color: "text-red-500" },
+];
 
-  const SkillData = [
-    {
-      id: "1",
-      skillName: "HTML",
-      skillPercent: 95,
-      skillsIcon: <AiFillHtml5 style={{ color: "#e9622879" }} />,
-      Animation: "fade-right",
-    },
-    {
-      id: "2",
-      skillName: "CSS,SCSS",
-      skillPercent: 95,
-      skillsIcon: <DiCss3Full style={{ fill: "#2862e978" }} />,
-      Animation: "fade-right",
-    },
-    {
-      id: "3",
-      skillName: "JavaScript",
-      skillPercent: 80,
-      skillsIcon: <SiJavascript style={{ fill: "gold", fontSize: "125px" }} />,
-      Animation: "fade-up",
-    },
-    {
-      id: "4",
-      skillName: "ReactJS",
-      skillPercent: 90,
-      skillsIcon: <DiReact style={{ fill: "#5ED3F3" }} />,
-      Animation: "fade-left",
-    },
-    {
-      id: "5",
-      skillName: "Git",
-      skillPercent: 90,
-      skillsIcon: <AiFillGithub style={{ color: "#00000087" }} />,
-      Animation: "fade-left",
-    },
-  ];
+// A single skill card: icon + name + a progress bar that animates from
+// 0 to its target percentage the first time it scrolls into view.
+function SkillCard({ name, percent, icon: Icon, color }) {
+  const [ref, visible] = useReveal();
+
   return (
-    <div id="skills" className="skills">
-      {SkillData.map((data) => {
-        return (
-          <div
-            data-aos-duration="1500"
-            data-aos={data.Animation}
-            key={data.id}
-            className="skills_card"
-          >
-            <h1>{data.skillName}</h1>
-            <div className="skills_percent">
-              <section>
-                <div className="skills_icon">{data.skillsIcon}</div>
-                <svg
-                  className="circle-chart"
-                  viewBox="0 0 33.83098862 33.83098862"
-                  width={200}
-                  height={200}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    className="circle-chart__background"
-                    stroke="#efefef"
-                    strokeWidth={2}
-                    fill="none"
-                    cx="16.91549431"
-                    cy="16.91549431"
-                    r="15.91549431"
-                  />
-                  <circle
-                    className="circle-chart__circle"
-                    stroke="#0049ff"
-                    strokeWidth={2}
-                    strokeDasharray={data.skillPercent}
-                    strokeLinecap="round"
-                    fill="none"
-                    cx="16.91549431"
-                    cy="16.91549431"
-                    r="15.91549431"
-                  />
-                  <g className="circle-chart__info">
-                    <text
-                      className="circle-chart__percent"
-                      x="16.91549431"
-                      y="15.5"
-                      alignmentBaseline="central"
-                      textAnchor="middle"
-                      fontSize={8}
-                    >
-                      {`${data.skillPercent}%`}
-                    </text>
-                  </g>
-                </svg>
-              </section>
-            </div>
-          </div>
-        );
-      })}
+    <div
+      ref={ref}
+      className={`reveal ${
+        visible ? "is-visible" : ""
+      } rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900`}
+    >
+      <div className="flex items-center gap-3">
+        <Icon className={`${color} shrink-0`} size={28} />
+        <span className="font-semibold">{name}</span>
+        <span className="ml-auto text-sm font-medium text-zinc-500 dark:text-zinc-400">
+          {percent}%
+        </span>
+      </div>
+
+      <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-[width] duration-1000 ease-out"
+          style={{ width: visible ? `${percent}%` : "0%" }}
+        />
+      </div>
     </div>
   );
 }
 
-export default index;
+function Skills() {
+  return (
+    <section id="skills" className="bg-zinc-50 px-6 py-28 dark:bg-zinc-900/40">
+      <div className="mx-auto max-w-5xl">
+        <div className="text-center">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-indigo-500">
+            Навыки
+          </h2>
+          <p className="mt-3 text-3xl font-bold sm:text-4xl">
+            Технологии, с которыми я работаю
+          </p>
+        </div>
+
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {SKILLS.map((skill) => (
+            <SkillCard key={skill.name} {...skill} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Skills;

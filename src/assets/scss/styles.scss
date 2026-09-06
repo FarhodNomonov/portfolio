@@ -1,23 +1,3 @@
-:root {
-  --bg-primary: #12141a;
-  --bg-secondary: #1a1d24;
-  --text-primary: #f2f2f0;
-  --text-secondary: #9a9da6;
-  --accent: #5b8fd6;
-  --border: #2a2d36;
-  --card-shadow: rgba(0, 0, 0, 0.35);
-}
-
-[data-theme="light"] {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7f7f7;
-  --text-primary: #1a1a1a;
-  --text-secondary: #5f5f5f;
-  --accent: #185fa5;
-  --border: #d8d8d8;
-  --card-shadow: rgba(224, 227, 231, 0.32);
-}
-
 @font-face {
   font-family: "Mons";
   src: url(../font/Montserrat/static/Montserrat-Medium.ttf);
@@ -31,9 +11,7 @@
   font-family: "Mons", serif;
   scroll-behavior: smooth;
   body {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: background 0.3s ease, color 0.3s ease;
+    // filter: saturate(180%);
 
     #root {
       max-width: 100vw;
@@ -67,7 +45,7 @@
         }
         a {
           margin: 0 20px;
-          color: var(--text-primary);
+          color: #000000;
           position: relative;
           padding-bottom: 10px;
           &::before {
@@ -75,7 +53,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background-color: var(--accent);
+            background-color: #24292f;
             top: 20px;
             left: 0;
             transition: 0.4s linear;
@@ -98,7 +76,7 @@
           left: 0;
           width: 100vw;
           height: 50vh;
-          background: var(--accent);
+          background: #0049ff;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -145,32 +123,9 @@
           svg {
             width: 100%;
             height: 100%;
-            fill: var(--text-primary);
-          }
-        }
-        .theme_toggle {
-          background: transparent;
-          border: 1px solid var(--border);
-          color: var(--text-primary);
-          border-radius: 50%;
-          width: 34px;
-          height: 34px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          margin: 0 10px;
-          font-size: 16px;
-          transition: 0.3s ease;
-          &:hover {
-            border-color: var(--accent);
-            color: var(--accent);
           }
         }
         .lang_select {
-          display: flex;
-          justify-content: center;
-          align-items: center;
           position: relative;
           user-select: none;
           @media screen and (max-width: 1025px) {
@@ -187,8 +142,7 @@
             cursor: pointer;
             width: 100px;
             height: 30px;
-            border: 1px solid var(--border);
-            color: var(--text-primary);
+            border: 1px solid #004d51;
             padding: 10px;
             margin: 3px;
             @media screen and (max-width: 420px) {
@@ -204,7 +158,7 @@
             transform: scale(0.7);
             opacity: 0;
             pointer-events: none;
-            background: var(--bg-secondary);
+            background: #fff;
             transition: 100ms ease;
           }
           .select_custome.active {
@@ -233,10 +187,10 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: var(--text-primary);
+            background: #000;
             border-radius: 20px;
             transition: 0.3s ease;
-            box-shadow: 0 9px 0 0px var(--text-primary);
+            box-shadow: 0 9px 0 0px #000;
           }
           &::before {
             content: "";
@@ -246,7 +200,7 @@
             width: 100%;
             height: 2px;
             transition: 0.3s ease;
-            background: var(--text-primary);
+            background: #000;
             border-radius: 20px;
           }
         }
@@ -290,7 +244,6 @@
         h1 {
           font-size: 50px;
           margin-bottom: 15px;
-          color: var(--text-primary);
           @media screen and (max-width: 426px) {
             font-size: 40px;
           }
@@ -300,7 +253,7 @@
         }
         p {
           font-size: 22px;
-          color: var(--text-secondary);
+          color: rgb(138, 138, 138);
           margin-bottom: 10px;
           @media screen and (max-width: 426px) {
             font-size: 25px;
@@ -318,9 +271,9 @@
           a {
             button {
               padding: 10px 30px;
-              background: var(--accent);
+              background: #0049ff;
               border-radius: 30px;
-              border: 1px solid var(--accent);
+              border: 1px solid #0049ff;
               color: #fff;
               font-size: 25px;
               cursor: pointer;
@@ -342,9 +295,9 @@
           }
           button {
             padding: 10px 30px;
-            background: var(--accent);
+            background: #0049ff;
             border-radius: 30px;
-            border: 1px solid var(--accent);
+            border: 1px solid #0049ff;
             color: #fff;
             font-size: 25px;
             cursor: pointer;
@@ -362,9 +315,9 @@
             width: 50px;
             display: inline-flex;
             height: 50px;
-            border: 1px solid var(--border);
+            border: 1px solid #004d51;
             border-radius: 50%;
-            color: var(--text-primary);
+            color: #004d51;
             margin: 0 5px;
             justify-content: center;
             align-items: center;
@@ -385,7 +338,7 @@
               svg {
                 transition: 0.2s ease;
                 &:hover {
-                  color: var(--accent);
+                  color: blue;
                   transform: scale(1.3);
                 }
               }
@@ -435,7 +388,7 @@
         font-style: normal;
         font-weight: 700;
         font-size: 45px;
-        color: var(--text-primary);
+        color: #000000;
         margin-bottom: 15px;
         @media screen and (max-width: 426px) {
           font-size: 40px;
@@ -449,7 +402,6 @@
         font-style: normal;
         font-weight: 500;
         font-size: 30px;
-        color: var(--text-secondary);
         margin-bottom: 10px;
         @media screen and (max-width: 426px) {
           font-size: 25px;
@@ -473,21 +425,17 @@
       }
       .skills_card {
         width: 350px;
-        border: 1px solid var(--border);
+        border: 1px solid #e0e3e7;
         border-radius: 15px;
         padding: 20px;
-        background: var(--bg-secondary);
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         flex-wrap: wrap;
-        -webkit-box-shadow: 4px 4px 14px 10px var(--card-shadow);
-        -moz-box-shadow: 4px 4px 14px 10px var(--card-shadow);
-        box-shadow: 4px 4px 14px 10px var(--card-shadow);
-        h1 {
-          color: var(--text-primary);
-        }
+        -webkit-box-shadow: 4px 4px 14px 10px rgba(224, 227, 231, 0.32);
+        -moz-box-shadow: 4px 4px 14px 10px rgba(224, 227, 231, 0.32);
+        box-shadow: 4px 4px 14px 10px rgba(224, 227, 231, 0.32);
         .skills_percent {
           position: relative;
           .skills_icon {
@@ -502,6 +450,7 @@
             align-items: center;
             animation: circle-chart-appear 2s forwards;
             transform: translateY(0.3em);
+            // color: #e9622879;
           }
           section {
             display: flex;
@@ -535,9 +484,6 @@
               animation: circle-chart-appear 2s forwards;
               opacity: 0;
               transform: translateY(0.3em);
-              text {
-                fill: var(--text-primary);
-              }
             }
           }
         }
@@ -548,7 +494,6 @@
       > h1 {
         text-align: center;
         margin-bottom: 30px;
-        color: var(--text-primary);
         @media screen and (max-width: 426px) {
           font-size: 40px;
         }
@@ -572,10 +517,9 @@
         position: relative;
         width: 300px;
         height: 300px;
-        border: 1px solid var(--border);
+        border: 1px solid #0049ff7a;
         border-radius: 20px;
         overflow: hidden;
-        background: var(--bg-secondary);
 
         &:hover {
           .after {
@@ -608,7 +552,7 @@
           left: 0;
           width: 100%;
           height: 100%;
-          background: var(--accent);
+          background: #0049ff7a;
           transition: 0.3s ease;
           cursor: pointer;
         }
@@ -616,8 +560,8 @@
     }
     .footer {
       padding: 50px;
-      color: var(--text-primary);
-      background: var(--bg-secondary);
+      color: #fff;
+      background: #24292f;
       text-align: center;
       @media screen and (max-width: 376px) {
         padding: 30px;
@@ -632,13 +576,11 @@
           gap: 20px;
         }
         a {
-          color: var(--text-primary);
-          fill: var(--text-primary);
+          color: #fff;
+          fill: #fff;
           transition: 0.3s ease;
           &:hover {
             transform: scale(1.3);
-            color: var(--accent);
-            fill: var(--accent);
           }
           svg {
             width: 22px;
@@ -740,6 +682,7 @@
       display: grid;
       place-items: center;
       background: #333333a4;
+      // backdrop-filter: blur(5px) saturate(0%);
       top: 0;
       left: 0;
       z-index: 9;
@@ -748,10 +691,10 @@
         max-width: calc(100% - 60%);
         display: grid;
         grid-template-columns: 1fr;
-        background: var(--bg-secondary);
+        background: #fff;
         padding: 30px 45px;
         border-radius: 20px;
-        border: 2px solid var(--border);
+        border: 2px solid #e7e7e7;
         position: relative;
         animation: modal 0.6s ease alternate;
         @media screen and (max-width: 1025px) {
@@ -774,11 +717,11 @@
           cursor: pointer;
           border-radius: 50%;
           line-height: 14px;
-          color: var(--text-secondary);
+          color: #777;
           transition: 0.3s ease;
           &:hover {
-            background-color: var(--border);
-            color: var(--text-primary);
+            background-color: #77777735;
+            color: #555;
           }
           @media screen and (max-width: 426px) {
             top: 5px;
@@ -788,7 +731,6 @@
         .modal_title {
           margin-bottom: 20px;
           h2 {
-            color: var(--text-primary);
             @media screen and (max-width: 769px) {
               font-size: 16px;
             }
@@ -798,10 +740,6 @@
           display: grid;
           grid-template-columns: 1fr;
           grid-gap: 10px;
-          label {
-            color: var(--text-secondary);
-            font-size: 14px;
-          }
           input,
           textarea {
             width: 100%;
@@ -809,9 +747,7 @@
             font-size: 18px;
             border-radius: 8px;
             outline: none;
-            border: 1px solid var(--border);
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            border: 1px solid silver;
             @media screen and (max-width: 769px) {
               font-size: 16px;
             }
@@ -823,14 +759,14 @@
             outline: none;
             border: 1px solid transparent;
             cursor: pointer;
-            background: var(--accent);
+            background: teal;
             color: #fff;
             font-weight: 600;
             transition: 0.3s ease all;
             &:hover {
               background-color: transparent;
-              border: 1px solid var(--accent);
-              color: var(--accent);
+              border: 1px solid teal;
+              color: teal;
             }
             @media screen and (max-width: 769px) {
               font-size: 16px;

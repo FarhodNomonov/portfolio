@@ -1,17 +1,11 @@
-import React from "react";
-import { Toaster } from 'react-hot-toast';
-import AOS from "aos";
 import Home from "./components/home";
+import Wrapper from "./components/Wrapper";
+
 function App() {
-  React.useEffect(() => {
-    AOS.init();
-    AOS.refresh();
-  }, []);
   return (
-    <div className="App">
+    <Wrapper>
       <Home />
-      <Toaster />
-    </div>
+    </Wrapper>
   );
 }
 
