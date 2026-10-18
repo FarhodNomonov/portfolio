@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { FiCode, FiMonitor, FiCpu } from "react-icons/fi";
-import useReveal from "../../hooks/useReveal";
+import { Reveal, Stagger, StaggerItem } from "../ui/motion";
 
 const STATS = [
   { valueId: "app.experience.stat1.value", labelId: "app.experience.stat1.label" },
@@ -28,65 +28,51 @@ const HIGHLIGHTS = [
 ];
 
 function Experience() {
-  const [ref, visible] = useReveal();
-
   return (
-    <section
-      id="experience"
-      className="bg-zinc-50 px-6 py-28 dark:bg-zinc-900/40"
-    >
-      <div
-        ref={ref}
-        className={`reveal ${visible ? "is-visible" : ""} mx-auto max-w-5xl`}
-      >
-        <div className="text-center">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-indigo-500">
+    <section id="experience" className="section border-t border-line">
+      <div className="container-site">
+        <Reveal className="max-w-3xl">
+          <h2 className="eyebrow">
             <FormattedMessage id="app.experience.eyebrow" />
           </h2>
-          <p className="mt-3 text-3xl font-bold sm:text-4xl">
+          <p className="h2 mt-4">
             <FormattedMessage id="app.experience.title" />
           </p>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">
+          <p className="mt-4 text-lg text-muted">
             <FormattedMessage id="app.experience.desc" />
           </p>
-        </div>
+        </Reveal>
 
         {/* Stat cards */}
-        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <Stagger as="dl" className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {STATS.map((stat) => (
-            <div
-              key={stat.labelId}
-              className="rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              <p className="text-2xl font-extrabold text-gradient sm:text-3xl">
-                <FormattedMessage id={stat.valueId} />
-              </p>
-              <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            <StaggerItem key={stat.labelId} className="card flex flex-col p-6">
+              <dt className="order-2 mt-2 text-sm text-muted">
                 <FormattedMessage id={stat.labelId} />
-              </p>
-            </div>
+              </dt>
+              <dd className="order-1 font-display text-2xl font-semibold sm:text-3xl">
+                <FormattedMessage id={stat.valueId} />
+              </dd>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
 
         {/* Highlight cards */}
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
+        <Stagger className="mt-4 grid gap-3 sm:gap-4 md:grid-cols-3">
           {HIGHLIGHTS.map(({ icon: Icon, titleId, descId }) => (
-            <div
-              key={titleId}
-              className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
-                <Icon size={20} />
-              </div>
-              <h3 className="mt-4 font-semibold">
+            <StaggerItem key={titleId} className="card gradient-border p-6">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-lime text-night">
+                <Icon size={20} aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 font-display text-lg font-semibold">
                 <FormattedMessage id={titleId} />
               </h3>
-              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted">
                 <FormattedMessage id={descId} />
               </p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

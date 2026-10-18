@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { FaLinkedin, FaGithub, FaTelegram, FaInstagram } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import { FormattedMessage } from "react-intl";
-import { Toaster } from "react-hot-toast";
-import useReveal from "../../hooks/useReveal";
-import Modal from "../ui/modal";
+import { Reveal } from "../ui/motion";
+import { useContactModal } from "../ContactModal";
 
 // Real links where already known from the existing project, "#" placeholder
 // where none was provided (LinkedIn).
@@ -20,46 +18,43 @@ const SOCIALS = [
 ];
 
 function Contact() {
-  const [ref, visible] = useReveal();
-  const [modalOpen, setModalOpen] = useState(false);
+  const openContact = useContactModal();
 
   return (
-    <section id="contact" className="bg-zinc-50 px-6 py-28 dark:bg-zinc-900/40">
-      <div
-        ref={ref}
-        className={`reveal ${visible ? "is-visible" : ""} mx-auto max-w-2xl text-center`}
-      >
-        <h2 className="text-3xl font-bold sm:text-4xl">
-          <FormattedMessage id="app.footer.desc" />
-        </h2>
+    <section id="contact" className="section border-t border-line">
+      <Reveal className="container-site">
+        <div className="card relative overflow-hidden rounded-panel px-6 py-16 text-center sm:px-12">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-0 h-72 w-[36rem] max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-3xl"
+            style={{ background: "radial-gradient(circle, var(--glow), transparent 70%)" }}
+          />
+          <h2 className="h2 relative mx-auto max-w-2xl">
+            <FormattedMessage id="app.footer.desc" />
+          </h2>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          {SOCIALS.map(({ name, icon: Icon, href }) => (
-            <a
-              key={name}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={name}
-              className="grid h-14 w-14 place-items-center rounded-2xl border border-zinc-200 bg-white text-zinc-600 shadow-sm transition-all hover:-translate-y-1 hover:border-transparent hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-500 hover:text-white hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-            >
-              <Icon size={24} />
-            </a>
-          ))}
+          <ul className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
+            {SOCIALS.map(({ name, icon: Icon, href }) => (
+              <li key={name}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={name}
+                  className="grid h-14 w-14 place-items-center rounded-2xl border border-line bg-surface-2 text-ink transition-all duration-200 hover:-translate-y-1 hover:border-transparent hover:bg-lime hover:text-night"
+                >
+                  <Icon size={22} />
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <button type="button" onClick={openContact} className="btn-primary relative mt-10">
+            <FiSend size={16} />
+            <FormattedMessage id="app.contactme" />
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={() => setModalOpen(true)}
-          className="mt-10 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-transform hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
-        >
-          <FiSend size={16} />
-          <FormattedMessage id="app.contactme" />
-        </button>
-      </div>
-
-      {modalOpen && <Modal onClose={() => setModalOpen(false)} />}
-      <Toaster position="top-center" />
+      </Reveal>
     </section>
   );
 }

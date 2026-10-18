@@ -16,7 +16,7 @@ function Modal({ onClose }) {
   } = useForm();
 
   const errorClass = (hasError) =>
-    hasError ? "border-red-500 focus:ring-red-500" : "border-zinc-200 dark:border-zinc-700 focus:ring-indigo-500";
+    hasError ? "border-red-500 focus:ring-red-500" : "border-line focus:ring-lime";
 
   const onSubmit = (data) => {
     setLoader(true);
@@ -43,64 +43,72 @@ function Modal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] grid place-items-center bg-zinc-950/60 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[60] grid place-items-center bg-night/70 p-4 backdrop-blur-sm">
       {loader && <Loader />}
-      <div className="relative w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        className="relative w-full max-w-md rounded-panel border border-line bg-surface p-6 shadow-glow-soft sm:p-8"
+      >
         <button
           type="button"
           onClick={onClose}
-          aria-label="Закрыть"
-          className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+          aria-label={intl.formatMessage({ id: "modal.close" })}
+          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full text-muted transition-colors hover:bg-ink/5 hover:text-ink"
         >
           <FiX size={18} />
         </button>
 
-        <h2 className="text-xl font-bold">
+        <h2 id="contact-modal-title" className="font-display text-xl font-semibold">
           <FormattedMessage id="app.contactme" />
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 grid gap-4">
           <div>
-            <label className="mb-1 block text-sm text-zinc-500 dark:text-zinc-400">
+            <label htmlFor="contact-name" className="mb-1.5 block text-sm text-muted">
               <FormattedMessage id="app.name" />
             </label>
             <input
+              id="contact-name"
               type="text"
               {...register("first_name", { required: true })}
-              className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none ring-0 transition-colors focus:ring-2 ${errorClass(
+              className={`w-full rounded-xl border bg-surface-2 px-4 py-2.5 text-sm outline-none ring-0 transition-colors focus:ring-2 ${errorClass(
                 !!errors.first_name
               )}`}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm text-zinc-500 dark:text-zinc-400">
+            <label htmlFor="contact-email" className="mb-1.5 block text-sm text-muted">
               <FormattedMessage id="app.email" />
             </label>
             <input
+              id="contact-email"
               type="email"
               {...register("email", { required: true })}
-              className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-sm outline-none ring-0 transition-colors focus:ring-2 ${errorClass(
+              className={`w-full rounded-xl border bg-surface-2 px-4 py-2.5 text-sm outline-none ring-0 transition-colors focus:ring-2 ${errorClass(
                 !!errors.email
               )}`}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm text-zinc-500 dark:text-zinc-400">
+            <label htmlFor="contact-message" className="mb-1.5 block text-sm text-muted">
               <FormattedMessage id="app.desc" />
             </label>
             <textarea
+              id="contact-message"
               {...register("message")}
               rows="4"
               defaultValue={intl.formatMessage({ id: "app.tlg.msg" })}
-              className="w-full rounded-xl border border-zinc-200 bg-transparent px-4 py-2.5 text-sm outline-none ring-0 transition-colors focus:ring-2 focus:ring-indigo-500 dark:border-zinc-700"
+              className="w-full rounded-xl border border-line bg-surface-2 px-4 py-2.5 text-sm outline-none ring-0 transition-colors focus:ring-2 focus:ring-lime"
             />
           </div>
 
           <button
             type="submit"
-            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-transform hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+            className="btn-primary mt-2"
           >
             <FormattedMessage id="app.send" />
           </button>

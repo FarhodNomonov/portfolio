@@ -1,157 +1,185 @@
 import { useContext, useEffect, useState } from "react";
-import { FiMenu, FiX, FiSun, FiMoon, FiChevronDown } from "react-icons/fi";
-import { FormattedMessage } from "react-intl";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
+import { FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
+import { FormattedMessage, useIntl } from "react-intl";
 import useDarkMode from "../../../hooks/useDarkMode";
 import { Context } from "../../Wrapper";
 
 // Nav links: translation id + the section id it scrolls to.
 const NAV_LINKS = [
-  { id: "app.header.home", href: "#intro" },
-  { id: "app.header.about", href: "#about" },
-  { id: "app.header.skills", href: "#skills" },
-  { id: "app.header.experience", href: "#experience" },
+  { id: "nav.about", href: "#about" },
+  { id: "nav.skills", href: "#skills" },
+  { id: "nav.projects", href: "#projects" },
+  { id: "nav.services", href: "#services" },
+  { id: "nav.experience", href: "#experience" },
+  { id: "nav.contact", href: "#contact" },
 ];
 
-const LANGUAGES = [
-  { code: "ru", label: "RU" },
-  { code: "en", label: "EN" },
-  { code: "uz", label: "UZ" },
-];
+const LANGUAGES = ["ru", "en", "uz"];
+
+// Highlights the nav link of the section currently in the middle of the viewport.
+function useActiveSection() {
+  const [active, setActive] = useState("");
+
+  useEffect(() => {
+    const sections = NAV_LINKS.map((l) => document.querySelector(l.href)).filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  return active;
+}
+
+function LanguageSwitch({ className = "" }) {
+  const { locale, selectLanguage } = useContext(Context);
+  const intl = useIntl();
+
+  return (
+    <div
+      role="group"
+      aria-label={intl.formatMessage({ id: "nav.language" })}
+      className={`flex h-10 items-center rounded-full border border-line p-1 ${className}`}
+    >
+      {LANGUAGES.map((code) => (
+        <button
+          key={code}
+          type="button"
+          lang={code}
+          aria-pressed={locale === code}
+          onClick={() => selectLanguage(code)}
+          className={`h-8 min-w-9 rounded-full px-2.5 font-mono text-xs font-medium uppercase transition-colors ${
+            locale === code ? "bg-lime text-night" : "text-muted hover:text-ink"
+          }`}
+        >
+          {code}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function Header() {
   const [isDark, toggleDark] = useDarkMode();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const context = useContext(Context);
+  const active = useActiveSection();
+  const reduce = useReducedMotion();
+  const intl = useIntl();
 
-  // Adds a subtle shadow/background once the page has scrolled a bit,
-  // so the sticky navbar reads as "elevated" over the page content.
+  // Lock page scroll behind the fullscreen menu; Escape closes it.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Lock body scroll while the mobile menu is open.
-  useEffect(() => {
-    document.body.style.overflowY = menuOpen ? "hidden" : "auto";
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    if (!menuOpen) return;
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
-  const currentLangLabel =
-    LANGUAGES.find((l) => l.code === context.locale)?.label ||
-    context.locale?.slice(0, 2).toUpperCase() ||
-    "RU";
+  const themeLabel = intl.formatMessage({ id: isDark ? "nav.theme.light" : "nav.theme.dark" });
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        {/* Logo / brand mark */}
-        <a href="#intro" className="flex items-center gap-3 group">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 font-bold text-white shadow-lg shadow-indigo-500/20 transition-transform group-hover:scale-105">
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/* Glass layer lives in its own element: backdrop-filter on <header>
+          would trap the fixed mobile menu inside the 64px bar. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 -z-10 h-16 border-b border-line bg-bg/70 backdrop-blur-xl backdrop-saturate-150"
+      />
+      <div className="container-site flex h-16 items-center justify-between gap-4">
+        <a href="#intro" className="group flex items-center gap-3" onClick={() => setMenuOpen(false)}>
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent font-display text-sm font-bold text-night transition-transform group-hover:-rotate-6">
             ФН
           </span>
-          <span className="hidden text-sm font-semibold sm:block">
-            Фарход Номонов
+          <span className="hidden font-display text-sm font-medium sm:block">
+            <FormattedMessage id="name" />
           </span>
         </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-zinc-600 transition-colors hover:text-indigo-500 dark:text-zinc-300 dark:hover:text-indigo-400"
-            >
-              <FormattedMessage id={link.id} />
-            </a>
-          ))}
+        <nav aria-label={intl.formatMessage({ id: "nav.label" })} className="hidden lg:block">
+          <ul className="flex items-center gap-1">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  aria-current={active === link.href ? "true" : undefined}
+                  className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
+                    active === link.href ? "bg-ink/[.06] text-ink" : "text-muted hover:text-ink"
+                  }`}
+                >
+                  <FormattedMessage id={link.id} />
+                </a>
+              </li>
+            ))}
+          </ul>
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* Language switcher */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setLangOpen((v) => !v)}
-              className="flex h-10 items-center gap-1 rounded-full border border-zinc-200 px-3 text-sm font-medium text-zinc-600 transition-colors hover:border-indigo-400 hover:text-indigo-500 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-indigo-400 dark:hover:text-indigo-400"
-            >
-              {currentLangLabel}
-              <FiChevronDown size={14} />
-            </button>
-            {langOpen && (
-              <div className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    value={lang.code}
-                    onClick={(e) => {
-                      context.selectLanguage(e);
-                      setLangOpen(false);
-                    }}
-                    className={`block w-full px-4 py-2 text-left text-sm transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 ${
-                      context.locale === lang.code
-                        ? "font-semibold text-indigo-500"
-                        : "text-zinc-600 dark:text-zinc-300"
-                    }`}
-                  >
-                    {lang.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Dark mode toggle */}
+          <LanguageSwitch className="hidden sm:flex" />
           <button
             type="button"
             onClick={toggleDark}
-            aria-label="Переключить тему"
-            className="grid h-10 w-10 place-items-center rounded-full border border-zinc-200 text-zinc-600 transition-colors hover:border-indigo-400 hover:text-indigo-500 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-indigo-400 dark:hover:text-indigo-400"
+            aria-label={themeLabel}
+            title={themeLabel}
+            className="grid h-10 w-10 place-items-center rounded-full border border-line text-muted transition-colors hover:text-ink"
           >
-            {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
+            {isDark ? <FiSun size={17} /> : <FiMoon size={17} />}
           </button>
-
-          {/* Mobile menu toggle */}
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Открыть меню"
-            className="grid h-10 w-10 place-items-center rounded-full border border-zinc-200 text-zinc-600 dark:border-zinc-700 dark:text-zinc-300 md:hidden"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={intl.formatMessage({ id: menuOpen ? "nav.menu.close" : "nav.menu.open" })}
+            className="grid h-10 w-10 place-items-center rounded-full border border-line text-ink lg:hidden"
           >
-            {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+            {menuOpen ? <FiX size={19} /> : <FiMenu size={19} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile nav panel */}
-      <div
-        className={`grid overflow-hidden transition-all duration-300 md:hidden ${
-          menuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <nav className="min-h-0 flex flex-col gap-1 border-t border-zinc-200 bg-white px-6 py-4 dark:border-zinc-800 dark:bg-zinc-950">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-indigo-500 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-indigo-400"
-            >
-              <FormattedMessage id={link.id} />
-            </a>
-          ))}
-        </nav>
-      </div>
+      <AnimatePresence>
+        {menuOpen && (
+          <m.div
+            id="mobile-menu"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduce ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-x-0 bottom-0 top-16 z-40 flex h-[calc(100dvh-4rem)] flex-col overflow-y-auto bg-bg px-4 pb-8 pt-6 sm:px-6 lg:hidden"
+          >
+            <nav aria-label={intl.formatMessage({ id: "nav.label" })} className="flex-1">
+              <ul>
+                {NAV_LINKS.map((link, i) => (
+                  <m.li
+                    key={link.href}
+                    initial={reduce ? false : { opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.04 * i, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="border-b border-line"
+                  >
+                    <a
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-baseline gap-4 py-4 font-display text-[clamp(1.75rem,8vw,2.75rem)] font-medium leading-tight"
+                    >
+                      <span className="font-mono text-xs text-muted">0{i + 1}</span>
+                      <FormattedMessage id={link.id} />
+                    </a>
+                  </m.li>
+                ))}
+              </ul>
+            </nav>
+            <LanguageSwitch className="mt-8 self-start sm:hidden" />
+          </m.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

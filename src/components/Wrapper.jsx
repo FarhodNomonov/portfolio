@@ -33,10 +33,13 @@ const Wrapper = (props) => {
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    document.title = MESSAGES[locale]["meta.title"];
   }, [locale]);
 
-  function selectLanguage(e) {
-    const newLocale = e.target.value;
+  // Accepts a locale code or a change/click event whose target has a value.
+  function selectLanguage(codeOrEvent) {
+    const newLocale =
+      typeof codeOrEvent === "string" ? codeOrEvent : codeOrEvent.target.value;
     if (!MESSAGES[newLocale]) return;
     setLocale(newLocale);
     try {

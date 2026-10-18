@@ -1,64 +1,84 @@
-import { AiFillHtml5 } from "react-icons/ai";
-import { DiCss3Full, DiReact } from "react-icons/di";
-import { SiJavascript, SiGit } from "react-icons/si";
-import useReveal from "../../hooks/useReveal";
+import { FiServer, FiLayout, FiSmartphone, FiBox, FiZap } from "react-icons/fi";
+import { FormattedMessage } from "react-intl";
+import { Reveal, Stagger, StaggerItem } from "../ui/motion";
 
-const SKILLS = [
-  { name: "HTML", percent: 95, icon: AiFillHtml5, color: "text-orange-500" },
-  { name: "CSS/SCSS", percent: 95, icon: DiCss3Full, color: "text-blue-500" },
-  { name: "JavaScript", percent: 80, icon: SiJavascript, color: "text-yellow-400" },
-  { name: "ReactJS", percent: 90, icon: DiReact, color: "text-cyan-400" },
-  { name: "Git", percent: 90, icon: SiGit, color: "text-red-500" },
+// Tags are product names, except the few with an `id`, which are translated.
+const GROUPS = [
+  {
+    titleId: "skills.backend",
+    icon: FiServer,
+    span: "lg:col-span-7",
+    tags: ["PHP 8", "Laravel", "REST API", "MySQL", "PostgreSQL", "Redis", "Node.js"],
+  },
+  {
+    titleId: "skills.frontend",
+    icon: FiLayout,
+    span: "lg:col-span-5",
+    tags: ["React", "TypeScript", "Next.js", "Inertia", "Tailwind", "HTML/CSS"],
+  },
+  {
+    titleId: "skills.mobile",
+    icon: FiSmartphone,
+    span: "lg:col-span-4",
+    tags: ["Flutter", "React Native", "Kotlin", "Swift"],
+  },
+  {
+    titleId: "skills.infra",
+    icon: FiBox,
+    span: "lg:col-span-4",
+    tags: ["Docker", "GitHub Actions", "Linux/VPS", "Git"],
+  },
+  {
+    titleId: "skills.integrations",
+    icon: FiZap,
+    span: "md:col-span-2 lg:col-span-4",
+    tags: [
+      "Telegram Bot API",
+      "Google Sheets API",
+      { id: "skills.tag.excel" },
+      { id: "skills.tag.ai" },
+    ],
+  },
 ];
-
-// A single skill card: icon + name + a progress bar that animates from
-// 0 to its target percentage the first time it scrolls into view.
-function SkillCard({ name, percent, icon: Icon, color }) {
-  const [ref, visible] = useReveal();
-
-  return (
-    <div
-      ref={ref}
-      className={`reveal ${
-        visible ? "is-visible" : ""
-      } rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900`}
-    >
-      <div className="flex items-center gap-3">
-        <Icon className={`${color} shrink-0`} size={28} />
-        <span className="font-semibold">{name}</span>
-        <span className="ml-auto text-sm font-medium text-zinc-500 dark:text-zinc-400">
-          {percent}%
-        </span>
-      </div>
-
-      <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-[width] duration-1000 ease-out"
-          style={{ width: visible ? `${percent}%` : "0%" }}
-        />
-      </div>
-    </div>
-  );
-}
 
 function Skills() {
   return (
-    <section id="skills" className="bg-zinc-50 px-6 py-28 dark:bg-zinc-900/40">
-      <div className="mx-auto max-w-5xl">
-        <div className="text-center">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-indigo-500">
-            Навыки
+    <section id="skills" className="section border-t border-line">
+      <div className="container-site">
+        <Reveal className="max-w-2xl">
+          <h2 className="eyebrow">
+            02 · <FormattedMessage id="skills.title" />
           </h2>
-          <p className="mt-3 text-3xl font-bold sm:text-4xl">
-            Технологии, с которыми я работаю
+          <p className="h2 mt-4">
+            <FormattedMessage id="skills.subtitle" />
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {SKILLS.map((skill) => (
-            <SkillCard key={skill.name} {...skill} />
+        <Stagger className="mt-14 grid gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-12">
+          {GROUPS.map(({ titleId, icon: Icon, span, tags }, i) => (
+            <StaggerItem
+              key={titleId}
+              className={`card gradient-border group flex flex-col p-6 transition-shadow duration-300 hover:shadow-glow-soft sm:p-7 ${span}`}
+            >
+              <div className="flex items-start justify-between">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl border border-line bg-surface-2 text-accent-ink transition-colors duration-300 group-hover:border-transparent group-hover:bg-lime group-hover:text-night">
+                  <Icon size={22} aria-hidden="true" />
+                </span>
+                <span className="font-mono text-xs text-muted">0{i + 1}</span>
+              </div>
+              <h3 className="mt-8 font-display text-xl font-semibold sm:text-2xl">
+                <FormattedMessage id={titleId} />
+              </h3>
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <li key={tag.id || tag} className="pill">
+                    {tag.id ? <FormattedMessage id={tag.id} /> : tag}
+                  </li>
+                ))}
+              </ul>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );
