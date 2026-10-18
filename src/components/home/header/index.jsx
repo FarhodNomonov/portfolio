@@ -95,7 +95,7 @@ export default function Header() {
       <div className="container-site flex h-16 items-center justify-between gap-4">
         <a href="#intro" className="group flex items-center gap-3" onClick={() => setMenuOpen(false)}>
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent font-display text-sm font-bold text-night transition-transform group-hover:-rotate-6">
-            ФН
+            FN
           </span>
           <span className="hidden font-display text-sm font-medium sm:block">
             <FormattedMessage id="name" />

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- "FN" monogram; letters are Unbounded Bold converted to outlines. -->
+  <defs>
+    <linearGradient id="fn" x1="51.2" y1="0" x2="460.8" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C6FF3D"/>
+      <stop offset="1" stop-color="#3DE0FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0B0D12"/>
+  <g fill="url(#fn)" transform="translate(32.73 355.51) scale(0.26535 -0.26535)">
+    <path d="M170.799072265625 442.9991455078125H715.1988525390625V267.6015625H170.799072265625ZM733.5987548828125 750V574.6024169921875H177.5986328125L277.197509765625 673.6014404296875V0H69.6005859375V750Z"/>
+    <path transform="translate(711 0)" d="M764.6005859375 144.79736328125 701.0009765625 132.1976318359375V750H902.197998046875V0H641.2017822265625L207.5980224609375 617.202392578125L270.797607421875 629.8021240234375V0H69.6005859375V750H338.1966552734375Z"/>
+  </g>
+</svg>
