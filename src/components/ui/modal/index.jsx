@@ -20,7 +20,7 @@ function Modal({ onClose }) {
 
   const onSubmit = (data) => {
     setLoader(true);
-    fetch("/api/send-message", {
+    fetch("/.netlify/functions/send-message", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

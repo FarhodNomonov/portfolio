@@ -13,9 +13,9 @@ const NAV_LINKS = [
 ];
 
 const LANGUAGES = [
-  { code: "Ru", label: "RU" },
-  { code: "En", label: "EN" },
-  { code: "Uz", label: "UZ" },
+  { code: "ru", label: "RU" },
+  { code: "en", label: "EN" },
+  { code: "uz", label: "UZ" },
 ];
 
 export default function Header() {

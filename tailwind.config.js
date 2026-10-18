@@ -1,7 +1,7 @@
 /** Tailwind config: class-based dark mode + a small accent/gradient palette used across the site. */
-module.exports = {
+export default {
   darkMode: "class",
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
   theme: {
     extend: {
       fontFamily: {
