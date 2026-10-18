@@ -2,46 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth scrolling for the anchor navigation in the navbar */
+/* ---------- Night Lab tokens ----------
+   Channels are space-separated RGB so Tailwind can apply opacity
+   (see tailwind.config.js). Light is the base, `.dark` overrides it;
+   the dark class is set before first paint by the script in index.html. */
+:root {
+  --bg: 246 245 241; /* #F6F5F1 */
+  --surface: 255 255 255; /* #FFFFFF */
+  --surface-2: 238 236 230; /* #EEECE6 */
+  --text: 15 17 21; /* #0F1115 */
+  --muted: 84 91 105; /* #545B69 — AA on bg and surfaces */
+  --accent-ink: 61 90 0; /* #3D5A00 — dark olive: accent-coloured text stays AA */
+  --line: rgba(15, 17, 21, 0.1);
+  --glow: rgba(120, 170, 0, 0.35);
+  --grid-line: rgba(15, 17, 21, 0.06);
+  --noise-opacity: 0.035;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 11 13 18; /* #0B0D12 */
+  --surface: 18 21 28; /* #12151C */
+  --surface-2: 26 30 39; /* #1A1E27 */
+  --text: 237 239 243; /* #EDEFF3 */
+  --muted: 154 163 178; /* #9AA3B2 */
+  --accent-ink: 198 255 61; /* #C6FF3D */
+  --line: rgba(255, 255, 255, 0.08);
+  --glow: rgba(198, 255, 61, 0.45);
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --noise-opacity: 0.05;
+  color-scheme: dark;
+}
+
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  @apply bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
-  font-family: "Inter", system-ui, sans-serif;
+  @apply bg-bg font-sans text-ink antialiased;
+  font-feature-settings: "ss01";
+  text-rendering: optimizeLegibility;
 }
 
-/* Every section's top anchor sits below the fixed navbar; this keeps
-   scrolled-to sections from being hidden underneath it. */
+::selection {
+  background: #c6ff3d;
+  color: #0b0d12;
+}
+
+/* Section anchors land below the sticky header. */
 section[id] {
-  scroll-margin-top: 84px;
+  scroll-margin-top: 80px;
 }
 
-/* Reusable gradient text used for headings / accents across the site */
-.text-gradient {
-  @apply bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent;
+:focus-visible {
+  outline: 2px solid rgb(var(--accent-ink));
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
-/* Scroll-reveal: elements start hidden/offset, then transition in once
-   the useReveal hook adds the "is-visible" class (see src/hooks/useReveal.js). */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+@layer components {
+  /* 1200px container with 16px gutters on phones. */
+  .container-site {
+    @apply mx-auto w-full max-w-site px-4 sm:px-6;
+  }
+
+  .section {
+    @apply py-24 sm:py-32;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-[0.2em] text-accent-ink;
+  }
+
+  .h2 {
+    @apply font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-5xl;
+  }
+
+  .card {
+    @apply rounded-card border border-line bg-surface;
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-full border border-line bg-surface-2 px-3 py-1 text-[13px] font-medium text-ink/85;
+  }
+
+  .btn {
+    @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition duration-200 active:scale-[.98];
+  }
+
+  /* Lime fill keeps dark text in both themes. */
+  .btn-primary {
+    @apply btn bg-lime text-night hover:shadow-glow;
+  }
+
+  .btn-ghost {
+    @apply btn border border-line text-ink hover:border-ink/40 hover:bg-ink/5;
+  }
+
+  /* Gradient text on dark. On light the gradient would fail contrast, so the
+     text stays dark and the gradient becomes a highlighter stroke under it. */
+  .text-accent {
+    background-image: linear-gradient(transparent 62%, rgba(198, 255, 61, 0.85) 62%, rgba(61, 224, 255, 0.75) 100%);
+    @apply text-ink;
+  }
+  .dark .text-accent {
+    background-image: linear-gradient(90deg, #c6ff3d, #3de0ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Gradient hairline that fades in on hover (mask keeps only the 1px ring). */
+  .gradient-border {
+    @apply relative;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #c6ff3d, #3de0ff);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .gradient-border:hover::before,
+  .gradient-border:focus-within::before {
+    opacity: 1;
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: var(--noise-opacity);
+  }
 }
 
-/* Thin, theme-aware scrollbar */
+/* No motion at all when the user asks for it (framer-motion parts check the
+   same media query via useReducedMotion). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-zinc-300 dark:bg-zinc-700;
+  border-radius: 999px;
+  background: rgb(var(--muted) / 0.35);
 }
