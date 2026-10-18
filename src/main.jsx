@@ -5,6 +5,7 @@ import "@fontsource-variable/manrope";
 import "@fontsource-variable/jetbrains-mono";
 import App from "./App";
 import "./index.css";
+import "./sections.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

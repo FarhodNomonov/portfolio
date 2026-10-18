@@ -28,6 +28,10 @@
     />
     <meta name="twitter:image" content="https://nomonovfarhod.uz/og-cover.png" />
 
+    <!-- Headline font arrives before first paint, so the hero doesn't reflow (CLS). -->
+    <link rel="preload" href="/node_modules/@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/node_modules/@fontsource-variable/unbounded/files/unbounded-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+
     <!-- Dark is the default; apply a saved light choice before first paint. -->
     <script>
       try {

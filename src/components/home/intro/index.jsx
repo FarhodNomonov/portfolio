@@ -6,6 +6,7 @@ import { useContactModal } from "../../ContactModal";
 import Terminal from "./Terminal";
 
 const WORD_IDS = ["hero.word1", "hero.word2", "hero.word3", "hero.word4"];
+const SHORT_IDS = ["hero.word1.short", "hero.word2.short", "hero.word3.short", "hero.word4.short"];
 const EASE = [0.22, 1, 0.36, 1];
 
 /**
@@ -38,26 +39,18 @@ function useCursorGlow(sectionRef, glowRef) {
       }
     };
 
+    // Offsets are relative to the glow's parked CSS position, so only the
+    // transform changes (moving left/top would count as a layout shift).
     const onMove = (e) => {
       const rect = section.getBoundingClientRect();
       const size = glow.offsetWidth;
-      target.x = e.clientX - rect.left - size / 2;
-      target.y = e.clientY - rect.top - size / 2;
+      target.x = e.clientX - rect.left - size / 2 - glow.offsetLeft;
+      target.y = e.clientY - rect.top - size / 2 - glow.offsetTop;
       if (!active) {
         active = true;
         frame = requestAnimationFrame(tick);
       }
     };
-
-    // Start from the parked position so the first move doesn't jump.
-    const rect = section.getBoundingClientRect();
-    const g = glow.getBoundingClientRect();
-    pos.x = target.x = g.left - rect.left;
-    pos.y = target.y = g.top - rect.top;
-    glow.style.left = "0px";
-    glow.style.top = "0px";
-    glow.style.right = "auto";
-    glow.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
 
     section.addEventListener("pointermove", onMove);
     return () => {
@@ -78,7 +71,9 @@ function RotatingWord() {
     return () => clearInterval(id);
   }, [reduce]);
 
+  // Phones (< 640px) get a shorter variant so the word always fits one line.
   const words = WORD_IDS.map((id) => intl.formatMessage({ id }));
+  const shortWords = SHORT_IDS.map((id) => intl.formatMessage({ id }));
 
   return (
     <>
@@ -98,7 +93,8 @@ function RotatingWord() {
             }
             transition={{ duration: reduce ? 0 : 0.55, ease: EASE }}
           >
-            {word}
+            <span className="whitespace-nowrap sm:hidden">{shortWords[i]}</span>
+            <span className="hidden sm:inline">{word}</span>
           </m.span>
         ))}
       </span>
@@ -129,7 +125,7 @@ function Intro() {
         <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,#000_30%,transparent_100%)]" />
         <div
           ref={glowRef}
-          className="absolute right-[-10%] top-[10%] h-[560px] w-[560px] rounded-full opacity-60 dark:opacity-40 sm:h-[720px] sm:w-[720px]"
+          className="absolute right-[-10%] top-20 h-[560px] w-[560px] rounded-full opacity-60 dark:opacity-40 sm:h-[720px] sm:w-[720px]"
           style={{ background: "radial-gradient(circle, var(--glow) 0%, rgba(61,224,255,.12) 35%, transparent 65%)" }}
         />
         <div className="bg-noise absolute inset-0" />
