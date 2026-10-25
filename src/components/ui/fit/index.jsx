@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
  * transform to fit (contain) the box this element gets from `className`.
  * Mockups are drawn once at desktop size and stay pixel-consistent on phones.
  */
-export default function Fit({ width, height, className = "", children }) {
+export default function Fit({ width, height, className = "", style, children }) {
   const ref = useRef(null);
   const [scale, setScale] = useState(0);
 
@@ -22,7 +22,7 @@ export default function Fit({ width, height, className = "", children }) {
   }, [width, height]);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={style}>
       <div
         className="absolute left-1/2 top-1/2"
         style={{

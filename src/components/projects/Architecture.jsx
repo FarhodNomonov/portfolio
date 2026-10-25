@@ -141,23 +141,30 @@ function Diagram({ layout, prefix }) {
           <span className={`font-display font-semibold leading-tight ${n.small ? "text-[12px]" : "text-[15px]"} ${n.nowrap ? "whitespace-nowrap" : ""}`}>
             {n.id ? intl.formatMessage({ id: n.id }) : n.label}
           </span>
-          {n.sub && <span className="mt-1 font-mono text-[11px] text-muted">{n.sub}</span>}
+          {(n.sub || n.subId) && (
+            <span className="mt-1 font-mono text-[11px] leading-snug text-muted">{n.subId ? intl.formatMessage({ id: n.subId }) : n.sub}</span>
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-export default function Architecture() {
+/** Responsive figure: horizontal diagram from md up, vertical one on phones. */
+export function ArchitectureFigure({ desktop, mobile, altId, prefix }) {
   const intl = useIntl();
   return (
-    <figure aria-label={intl.formatMessage({ id: "projects.arch.alt" })}>
-      <Fit width={DESKTOP.width} height={DESKTOP.height} className="relative hidden aspect-[1100/410] md:block">
-        <Diagram layout={DESKTOP} prefix="d" />
+    <figure aria-label={intl.formatMessage({ id: altId })}>
+      <Fit width={desktop.width} height={desktop.height} className="relative hidden md:block" style={{ aspectRatio: `${desktop.width}/${desktop.height}` }}>
+        <Diagram layout={desktop} prefix={`${prefix}d`} />
       </Fit>
-      <Fit width={MOBILE.width} height={MOBILE.height} className="relative mx-auto aspect-[340/490] max-w-[420px] md:hidden">
-        <Diagram layout={MOBILE} prefix="m" />
+      <Fit width={mobile.width} height={mobile.height} className="relative mx-auto max-w-[420px] md:hidden" style={{ aspectRatio: `${mobile.width}/${mobile.height}` }}>
+        <Diagram layout={mobile} prefix={`${prefix}m`} />
       </Fit>
     </figure>
   );
+}
+
+export default function Architecture() {
+  return <ArchitectureFigure desktop={DESKTOP} mobile={MOBILE} altId="projects.arch.alt" prefix="sw" />;
 }

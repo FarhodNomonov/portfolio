@@ -427,7 +427,7 @@ const CHAT = [
   { at: 3300, typingFrom: 2500 }, // result card
 ];
 
-function Typing() {
+export function Typing() {
   return (
     <span className="absolute left-0 top-0 inline-flex gap-1 rounded-[16px] rounded-bl-[4px] bg-[#182533] px-3.5 py-3">
       {[0, 1, 2].map((i) => (
@@ -437,7 +437,7 @@ function Typing() {
   );
 }
 
-function Bubble({ out, shown, typing, children, time }) {
+export function Bubble({ out, shown, typing, children, time }) {
   return (
     <div className={`relative flex ${out ? "justify-end" : "justify-start"}`}>
       {typing && !shown && <Typing />}
