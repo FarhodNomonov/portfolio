@@ -14,6 +14,8 @@ export default {
         display: ['"Unbounded Variable"', "system-ui", "sans-serif"],
         sans: ['"Manrope Variable"', "system-ui", "sans-serif"],
         mono: ['"JetBrains Mono Variable"', "ui-monospace", "monospace"],
+        // CRM mockups only; the font itself is loaded by the CRM chunk.
+        crm: ['"Fraunces Variable"', "Georgia", "serif"],
       },
       colors: {
         bg: token("bg"),
@@ -26,6 +28,21 @@ export default {
         lime: "#C6FF3D",
         cyan: "#3DE0FF",
         night: "#0B0D12",
+        // "Architect" — the CRM client's own brand, used only inside its
+        // mockups and fixed in both site themes.
+        crm: {
+          bg: "#F6F3EC",
+          card: "#FFFDF8",
+          line: "#E5DFD2",
+          ink: "#1B2433",
+          muted: "#5B616C",
+          navy: "#0F1B2D",
+          brass: "#C9A24B",
+          free: "#2F8F6B",
+          hold: "#D49B2E",
+          sold: "#B5523B",
+          off: "#9AA1AC",
+        },
       },
       borderColor: {
         line: "var(--line)",

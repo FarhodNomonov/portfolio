@@ -3,11 +3,11 @@
 export const LAPTOP = { width: 720, height: 460 };
 export const PHONE = { width: 300, height: 600 };
 
-export function Laptop({ children }) {
+export function Laptop({ children, screenClassName = "bg-bg text-ink" }) {
   return (
     <div className="flex h-full flex-col items-center">
       <div className="h-[442px] w-[684px] rounded-[20px] border border-white/10 bg-[#0E1117] p-[10px] shadow-glow-soft">
-        <div className="relative h-full w-full overflow-hidden rounded-[11px] bg-bg text-ink">{children}</div>
+        <div className={`relative h-full w-full overflow-hidden rounded-[11px] ${screenClassName}`}>{children}</div>
       </div>
       <div className="relative h-[16px] w-[720px] rounded-b-[16px] rounded-t-[4px] bg-gradient-to-b from-[#2A2F3A] to-[#14171D]">
         <span className="absolute left-1/2 top-0 h-[6px] w-[110px] -translate-x-1/2 rounded-b-[6px] bg-black/40" />

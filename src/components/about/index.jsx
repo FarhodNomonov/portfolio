@@ -7,7 +7,7 @@ const STATS = [
   { value: 5, suffix: "+", labelId: "about.stat.years" },
   { value: 4, labelId: "about.stat.school" },
   { value: 400, prefix: "~", labelId: "about.stat.students" },
-  { value: 318, labelId: "about.stat.tests" },
+  { value: 540, suffix: "+", labelId: "about.stat.tests" },
 ];
 
 function About() {

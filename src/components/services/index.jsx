@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { FiUsers, FiGrid, FiUser, FiSend, FiBarChart2, FiSmartphone, FiArrowRight } from "react-icons/fi";
+import { FiUsers, FiGrid, FiUser, FiSend, FiBarChart2, FiSmartphone, FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { Reveal, Stagger, StaggerItem } from "../ui/motion";
 import { useContactModal } from "../ContactModal";
 
@@ -100,6 +100,13 @@ export default function Services() {
           <p className="mt-3 max-w-xl leading-relaxed text-muted">
             <FormattedMessage id="services.crm.text" />
           </p>
+          <a
+            href="#projects-crm"
+            className="group mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent-ink underline decoration-current/30 underline-offset-4 transition-colors hover:decoration-current"
+          >
+            <FormattedMessage id="services.crm.example" />
+            <FiArrowUpRight className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+          </a>
           <div className="mt-auto">
             <MiniKanban />
           </div>

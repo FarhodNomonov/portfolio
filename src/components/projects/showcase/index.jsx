@@ -67,8 +67,9 @@ const EASE = [0.22, 1, 0.36, 1];
  * animationend advances to the next role — so pausing (hover, focus, section
  * off screen) is just animation-play-state. A manual pick stops autoplay;
  * with reduced motion the bar never runs, so there is no autoplay at all.
+ * `tabs` defaults to the Stanford roles; `idPrefix` keeps ids unique per case.
  */
-export default function Showcase() {
+export default function Showcase({ tabs = TABS, labelId = "projects.tabs.label", idPrefix = "" }) {
   const intl = useIntl();
   const reduce = useReducedMotion();
   const rootRef = useRef(null);
@@ -78,7 +79,7 @@ export default function Showcase() {
   const [hovered, setHovered] = useState(false);
   const [autoplay, setAutoplay] = useState(true);
 
-  const tab = TABS[active];
+  const tab = tabs[active];
   const running = autoplay && inView && !hovered;
 
   // Keep the active tab visible in the horizontal row on phones without
@@ -102,7 +103,7 @@ export default function Showcase() {
     const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
     if (!step) return;
     e.preventDefault();
-    const next = (active + step + TABS.length) % TABS.length;
+    const next = (active + step + tabs.length) % tabs.length;
     select(next);
     tabsRef.current?.children[next]?.focus();
   };
@@ -119,20 +120,20 @@ export default function Showcase() {
       <div
         ref={tabsRef}
         role="tablist"
-        aria-label={intl.formatMessage({ id: "projects.tabs.label" })}
+        aria-label={intl.formatMessage({ id: labelId })}
         onKeyDown={onKeyDown}
         className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 lg:col-span-4 lg:row-start-1 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0"
       >
-        {TABS.map((t, i) => {
+        {tabs.map((t, i) => {
           const selected = i === active;
           return (
             <button
               key={t.key}
-              id={`tab-${t.key}`}
+              id={`${idPrefix}tab-${t.key}`}
               type="button"
               role="tab"
               aria-selected={selected}
-              aria-controls="showcase-panel"
+              aria-controls={`${idPrefix}showcase-panel`}
               tabIndex={selected ? 0 : -1}
               onClick={() => select(i)}
               className={`relative shrink-0 overflow-hidden rounded-full border px-4 py-2.5 text-left text-sm font-semibold transition-colors lg:rounded-2xl lg:px-5 lg:py-4 lg:text-base ${
@@ -150,7 +151,7 @@ export default function Showcase() {
                 <span
                   key={active}
                   aria-hidden="true"
-                  onAnimationEnd={() => setActive((a) => (a + 1) % TABS.length)}
+                  onAnimationEnd={() => setActive((a) => (a + 1) % tabs.length)}
                   style={{ animationPlayState: running ? "running" : "paused" }}
                   className="tab-progress absolute inset-x-0 bottom-0 h-[3px] bg-accent motion-reduce:hidden"
                 />
@@ -161,9 +162,9 @@ export default function Showcase() {
       </div>
 
       <div
-        id="showcase-panel"
+        id={`${idPrefix}showcase-panel`}
         role="tabpanel"
-        aria-labelledby={`tab-${tab.key}`}
+        aria-labelledby={`${idPrefix}tab-${tab.key}`}
         className="bg-grid relative aspect-[4/5] overflow-hidden rounded-panel border border-line bg-surface/60 sm:aspect-[16/11] lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1"
       >
         <AnimatePresence initial={false}>
