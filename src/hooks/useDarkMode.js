@@ -3,16 +3,21 @@ import { useEffect, useState } from "react";
 const STORAGE_KEY = "theme";
 
 /**
- * Dark is the default theme; a saved "light" choice wins. Toggles the "dark"
- * class on <html> (the inline script in index.html applies it before first
- * paint), which flips the CSS variables in src/index.css.
+ * Dark is the default theme; a saved "light" choice wins. The inline script
+ * in index.html sets the "dark" class on <html> before first paint. The
+ * prerendered HTML can't know the visitor's choice, so the state starts
+ * empty (rendered as dark) and is read from <html> after mount; nothing is
+ * written back until then.
  */
 export default function useDarkMode() {
-  const [isDark, setIsDark] = useState(() =>
-    document.documentElement.classList.contains("dark")
-  );
+  const [isDark, setIsDark] = useState(null);
 
   useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  useEffect(() => {
+    if (isDark === null) return;
     document.documentElement.classList.toggle("dark", isDark);
     document
       .querySelector('meta[name="theme-color"]')
@@ -22,5 +27,5 @@ export default function useDarkMode() {
     } catch {}
   }, [isDark]);
 
-  return [isDark, () => setIsDark((prev) => !prev)];
+  return [isDark ?? true, () => setIsDark((prev) => !(prev ?? true))];
 }

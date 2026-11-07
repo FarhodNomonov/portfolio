@@ -4,6 +4,7 @@ import { FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
 import { FormattedMessage, useIntl } from "react-intl";
 import useDarkMode from "../../../hooks/useDarkMode";
 import { Context } from "../../Wrapper";
+import { pathFor } from "../../../i18n/locales";
 
 // Nav links: translation id + the section id it scrolls to.
 const NAV_LINKS = [
@@ -49,18 +50,24 @@ function LanguageSwitch({ className = "" }) {
       className={`flex h-10 items-center rounded-full border border-line p-1 ${className}`}
     >
       {LANGUAGES.map((code) => (
-        <button
+        // Real links, so search engines find every language version;
+        // a click switches in place without a reload.
+        <a
           key={code}
-          type="button"
+          href={pathFor(code)}
+          hrefLang={code}
           lang={code}
-          aria-pressed={locale === code}
-          onClick={() => selectLanguage(code)}
-          className={`h-8 min-w-9 rounded-full px-2.5 font-mono text-xs font-medium uppercase transition-colors ${
+          aria-current={locale === code ? "page" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            selectLanguage(code);
+          }}
+          className={`inline-flex h-8 min-w-9 items-center justify-center rounded-full px-2.5 font-mono text-xs font-medium uppercase transition-colors ${
             locale === code ? "bg-lime text-night" : "text-muted hover:text-ink"
           }`}
         >
           {code}
-        </button>
+        </a>
       ))}
     </div>
   );

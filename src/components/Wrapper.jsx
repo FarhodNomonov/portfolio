@@ -1,56 +1,48 @@
 import { useState, useEffect, createContext } from "react";
 import { IntlProvider } from "react-intl";
-import Uzbek from "../lang/uz.json";
-import Russian from "../lang/ru.json";
-import English from "../lang/en.json";
+import { loadMessages, pathFor } from "../i18n/locales";
 
 export const Context = createContext();
 
-const MESSAGES = { ru: Russian, en: English, uz: Uzbek };
 const STORAGE_KEY = "lang";
 
-// Maps a browser language tag ("ru-RU", "en-US", "uz-Latn-UZ") to one of
-// our locales; anything unknown falls back to Russian.
-function detectLocale(tag = "") {
-  const code = tag.toLowerCase();
-  if (code.startsWith("en")) return "en";
-  if (code.startsWith("uz")) return "uz";
-  return "ru";
-}
-
-// A saved choice wins over the browser language. localStorage can throw
-// (private mode, blocked storage), so every access is guarded.
-function initialLocale() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (MESSAGES[saved]) return saved;
-  } catch {}
-  return detectLocale(navigator.language);
-}
-
-const Wrapper = (props) => {
-  const [locale, setLocale] = useState(initialLocale);
+/**
+ * Locale and its messages come from the caller: the prerender passes them
+ * for each page, the browser reads them from the URL (see main.jsx).
+ * Switching language loads the other dictionary, then moves to its URL
+ * without a reload; Back/Forward switch back.
+ */
+const Wrapper = ({ locale: initialLocale, messages: initialMessages, children }) => {
+  const [{ locale, messages }, setState] = useState({ locale: initialLocale, messages: initialMessages });
 
   useEffect(() => {
     document.documentElement.lang = locale;
-    document.title = MESSAGES[locale]["meta.title"];
-  }, [locale]);
+    document.title = messages["meta.title"];
+  }, [locale, messages]);
 
-  // Accepts a locale code or a change/click event whose target has a value.
-  function selectLanguage(codeOrEvent) {
-    const newLocale =
-      typeof codeOrEvent === "string" ? codeOrEvent : codeOrEvent.target.value;
-    if (!MESSAGES[newLocale]) return;
-    setLocale(newLocale);
+  useEffect(() => {
+    const onPop = () => {
+      const code = window.location.pathname.split("/")[1] || "ru";
+      switchTo(["en", "uz"].includes(code) ? code : "ru", false);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  });
+
+  async function switchTo(newLocale, push = true) {
+    if (newLocale === locale) return;
+    const next = await loadMessages(newLocale);
+    setState({ locale: newLocale, messages: next });
+    if (push) history.pushState(null, "", pathFor(newLocale) + window.location.hash);
     try {
       localStorage.setItem(STORAGE_KEY, newLocale);
     } catch {}
   }
 
   return (
-    <Context.Provider value={{ locale, selectLanguage }}>
-      <IntlProvider messages={MESSAGES[locale]} locale={locale}>
-        {props.children}
+    <Context.Provider value={{ locale, selectLanguage: switchTo }}>
+      <IntlProvider messages={messages} locale={locale}>
+        {children}
       </IntlProvider>
     </Context.Provider>
   );

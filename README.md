@@ -2,6 +2,7 @@
 
 Сайт-портфолио Фархода Номонова, IT-учителя. Одна страница на React 18 + Vite,
 стили на Tailwind CSS, переводы ru / en / uz (react-intl). Хостинг — Netlify.
+Сборка: `vite build` → SSR-сборка → `scripts/prerender.js` пишет готовый HTML для `/`, `/uz/`, `/en/` + sitemap.xml и robots.txt. Домен задаётся одной переменной `SITE_URL`.
 Форма «Написать мне» отправляет сообщение в Telegram через Netlify Function
 `netlify/functions/send-message.js`.
 
