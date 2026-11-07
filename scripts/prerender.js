@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
-const SITE_URL = (process.env.SITE_URL || "https://farhod-nomonov.netlify.app").replace(/\/$/, "");
+const SITE_URL = (process.env.SITE_URL || "https://farhod-nomonov.uz").replace(/\/$/, "");
 const LOCALES = ["ru", "en", "uz"];
 const OG_LOCALE = { ru: "ru_RU", en: "en_US", uz: "uz_UZ" };
 const pathFor = (l) => (l === "ru" ? "/" : `/${l}/`);
