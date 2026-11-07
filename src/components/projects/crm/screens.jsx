@@ -341,7 +341,7 @@ const STAGES = [
   { name: "Konsultatsiya", count: 8, cards: [{ name: "Bekzod Tursunov", apt: "2x · 58 m²", sum: "514 mln" }] },
   { name: "Tashrif", count: 5, slot: true, cards: [{ name: "Dilnoza Karimova", apt: "Kv. 8 · 3x", sum: "727 mln" }] },
   { name: "Bron", count: 9, slot: true, cards: [{ name: "Malika Yusupova", apt: "Kv. 41 · 2x", sum: "561 mln", timer: "06:12:40" }] },
-  { name: "Shartnoma", count: 21, cards: [{ name: "Ulug‘bek Sobirov", apt: "Kv. 16 · 3x", sum: "698 mln", discount: 3 }] },
+  { name: "Shartnoma", count: 21, cards: [{ name: "Ulug‘bek Sobirov", apt: "Kv. 16 · 3x", sum: "698 mln" }] },
 ];
 const COL_W = 94;
 const COL_GAP = 8;
