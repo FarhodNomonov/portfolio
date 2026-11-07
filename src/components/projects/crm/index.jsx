@@ -1,5 +1,5 @@
 import "@fontsource-variable/fraunces";
-import { FiLock, FiClock, FiDivide, FiGitMerge } from "react-icons/fi";
+import { FiLock, FiClock, FiDivide, FiCheckCircle } from "react-icons/fi";
 import { Reveal } from "../../ui/motion";
 import Showcase from "../showcase";
 import { LAPTOP, PHONE } from "../showcase/devices";
@@ -20,6 +20,7 @@ const STACK = [
   "PhpWord",
   "LibreOffice",
   "Telegram Bot API",
+  "PWA",
   "Pest",
 ];
 
@@ -76,16 +77,16 @@ const TABS = [
 
 const STATS = [
   { value: 7, labelId: "crm.stat.days" },
-  { value: 224, labelId: "crm.stat.tests" },
-  { value: 22, labelId: "crm.stat.screens" },
-  { value: 2, labelId: "crm.stat.langs" },
+  { value: 340, labelId: "crm.stat.tests" },
+  { value: 42, labelId: "crm.stat.migrated" },
+  { value: 3, labelId: "crm.stat.langs" },
 ];
 
 const DECISIONS = [
   { icon: FiLock, titleId: "crm.decision1.title", textId: "crm.decision1.text" },
   { icon: FiClock, titleId: "crm.decision2.title", textId: "crm.decision2.text" },
   { icon: FiDivide, titleId: "crm.decision3.title", textId: "crm.decision3.text" },
-  { icon: FiGitMerge, titleId: "crm.decision4.title", textId: "crm.decision4.text" },
+  { icon: FiCheckCircle, titleId: "crm.decision4.title", textId: "crm.decision4.text" },
 ];
 
 // Same diagram language as the Stanford case (see Architecture.jsx).
