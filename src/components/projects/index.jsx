@@ -31,7 +31,9 @@ export default function Projects() {
   const intl = useIntl();
   const reduce = useReducedMotion();
   const crmTitle = useCrmTitle();
-  const [active, setActive] = useState(fromHash);
+  // Starts on the first case, like the prerendered HTML; a #projects-crm
+  // link switches after mount.
+  const [active, setActive] = useState(0);
   const buttonsRef = useRef([]);
 
   // Follow hash links (e.g. the Services card) and open the case they name.
@@ -42,6 +44,7 @@ export default function Projects() {
       document.getElementById("projects")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
     };
     if (window.location.hash === "#projects-crm") {
+      setActive(fromHash());
       // On first load the browser finds no #projects-crm element, so scroll here.
       requestAnimationFrame(() => document.getElementById("projects")?.scrollIntoView());
     }

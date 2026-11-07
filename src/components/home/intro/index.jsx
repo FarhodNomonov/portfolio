@@ -106,17 +106,14 @@ function Intro() {
   const sectionRef = useRef(null);
   const glowRef = useRef(null);
   const openContact = useContactModal();
-  const reduce = useReducedMotion();
   useCursorGlow(sectionRef, glowRef);
 
-  const enter = (delay) =>
-    reduce
-      ? {}
-      : {
-          initial: { y: 24 },
-          animate: { y: 0 },
-          transition: { duration: 0.8, delay, ease: EASE },
-        };
+  // Same markup for everyone; MotionConfig skips the rise for reduced motion.
+  const enter = (delay) => ({
+    initial: { y: 24 },
+    animate: { y: 0 },
+    transition: { duration: 0.8, delay, ease: EASE },
+  });
 
   return (
     <section id="intro" ref={sectionRef} className="relative isolate overflow-hidden pb-16 pt-28 sm:pb-24 sm:pt-32 lg:pt-28">

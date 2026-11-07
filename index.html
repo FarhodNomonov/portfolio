@@ -8,38 +8,23 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Фарход Номонов — full-stack разработчик (Laravel, React, Flutter) и главный IT-учитель частной школы Stanford. CRM-системы, веб-платформы, Telegram-боты и мобильные приложения."
-    />
     <meta name="theme-color" content="#0B0D12" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://farhod-nomonov.netlify.app" />
-    <meta property="og:title" content="Фарход Номонов — Full-stack разработчик" />
-    <meta
-      property="og:description"
-      content="CRM-системы, веб-платформы, Telegram-боты и мобильные приложения на Laravel, React и Flutter."
-    />
-    <meta property="og:image" content="https://farhod-nomonov.netlify.app/og-cover.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Фарход Номонов — Full-stack разработчик" />
-    <meta
-      name="twitter:description"
-      content="CRM-системы, веб-платформы, Telegram-боты и мобильные приложения на Laravel, React и Flutter."
-    />
-    <meta name="twitter:image" content="https://farhod-nomonov.netlify.app/og-cover.png" />
+    <!-- SEO_HEAD: description, canonical, hreflang, Open Graph and JSON-LD
+         are written per language by scripts/prerender.js. -->
 
     <!-- Headline font arrives before first paint, so the hero doesn't reflow (CLS). -->
     <link rel="preload" href="/node_modules/@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/node_modules/@fontsource-variable/unbounded/files/unbounded-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 
-    <!-- Dark is the default; apply a saved light choice before first paint. -->
+    <!-- Dark is the default; apply a saved light choice before first paint.
+         A visitor who picked uz/en earlier and opens "/" goes to that page. -->
     <script>
       try {
+        var lang = localStorage.getItem("lang");
+        if (location.pathname === "/" && (lang === "uz" || lang === "en")) {
+          location.replace("/" + lang + "/" + location.hash);
+        }
         if (localStorage.getItem("theme") === "light") {
           document.documentElement.classList.remove("dark");
           document.querySelector('meta[name="theme-color"]').content = "#F6F5F1";

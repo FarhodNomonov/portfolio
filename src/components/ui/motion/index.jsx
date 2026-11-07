@@ -1,4 +1,4 @@
-import { m, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1];
 const VIEWPORT = { once: true, margin: "0px 0px -10% 0px" };
@@ -9,13 +9,13 @@ const fadeUp = {
 };
 
 /**
- * Section-level scroll reveal: fade + 24px rise, once. With
- * prefers-reduced-motion the content renders in its final state.
+ * Section-level scroll reveal: fade + 24px rise, once. The markup is the same
+ * for everyone (the prerendered HTML has to match); with
+ * prefers-reduced-motion, <MotionConfig reducedMotion="user"> in App drops
+ * the rise and keeps only the fade.
  */
 export function Reveal({ as = "div", delay = 0, children, ...props }) {
-  const reduce = useReducedMotion();
   const Tag = m[as];
-  if (reduce) return <Tag {...props}>{children}</Tag>;
   return (
     <Tag
       initial="hidden"
@@ -32,9 +32,7 @@ export function Reveal({ as = "div", delay = 0, children, ...props }) {
 
 /** Parent that reveals its <StaggerItem> children one after another. */
 export function Stagger({ as = "div", gap = 0.08, children, ...props }) {
-  const reduce = useReducedMotion();
   const Tag = m[as];
-  if (reduce) return <Tag {...props}>{children}</Tag>;
   return (
     <Tag
       initial="hidden"
@@ -49,10 +47,9 @@ export function Stagger({ as = "div", gap = 0.08, children, ...props }) {
 }
 
 export function StaggerItem({ as = "div", children, ...props }) {
-  const reduce = useReducedMotion();
   const Tag = m[as];
   return (
-    <Tag variants={reduce ? undefined : fadeUp} {...props}>
+    <Tag variants={fadeUp} {...props}>
       {children}
     </Tag>
   );

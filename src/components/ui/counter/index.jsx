@@ -10,14 +10,19 @@ export default function Counter({ value, prefix = "", suffix = "" }) {
 
   useEffect(() => {
     const node = ref.current;
-    if (!node || !inView || reduce) return;
+    if (!node) return;
+    if (reduce) {
+      node.textContent = final;
+      return;
+    }
+    if (!inView) return;
     const controls = animate(0, value, {
       duration: 1.6,
       ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => (node.textContent = `${prefix}${Math.round(v)}${suffix}`),
     });
     return () => controls.stop();
-  }, [inView, reduce, value, prefix, suffix]);
+  }, [inView, reduce, value, prefix, suffix, final]);
 
   return (
     // The invisible final value reserves the width, so counting never reflows.
@@ -26,7 +31,7 @@ export default function Counter({ value, prefix = "", suffix = "" }) {
         {final}
       </span>
       <span ref={ref} className="col-start-1 row-start-1">
-        {reduce ? final : `${prefix}0${suffix}`}
+        {`${prefix}0${suffix}`}
       </span>
     </span>
   );
