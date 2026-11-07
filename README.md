@@ -1,4 +1,4 @@
-# nomonovfarhod.uz
+# farhod-nomonov.uz
 
 Сайт-портфолио Фархода Номонова, IT-учителя. Одна страница на React 18 + Vite,
 стили на Tailwind CSS, переводы ru / en / uz (react-intl). Хостинг — Netlify.
