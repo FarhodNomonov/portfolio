@@ -71,13 +71,13 @@ const TABS = [
     Screen: TelegramScreen,
     canvas: PHONE,
     glow: true,
-    points: ["crm.telegram.p1", "crm.telegram.p2"],
+    points: ["crm.telegram.p1", "crm.telegram.p2", "crm.telegram.p3"],
   },
 ];
 
 const STATS = [
   { value: 7, labelId: "crm.stat.days" },
-  { value: 340, labelId: "crm.stat.tests" },
+  { value: 395, labelId: "crm.stat.tests" },
   { value: 42, labelId: "crm.stat.migrated" },
   { value: 3, labelId: "crm.stat.langs" },
 ];

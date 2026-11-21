@@ -22,9 +22,9 @@ const BADGES = [{ id: "projects.badge", dot: "bg-lime" }];
 
 const STATS = [
   { value: 5, labelId: "projects.stat.roles" },
-  { value: 66, labelId: "projects.stat.actions" },
-  { value: 318, labelId: "projects.stat.tests" },
-  { value: 400, prefix: "~", labelId: "projects.stat.students" },
+  { value: 127, labelId: "projects.stat.actions" },
+  { value: 528, labelId: "projects.stat.tests" },
+  { value: 250, prefix: "~", labelId: "projects.stat.students" },
 ];
 
 const DECISIONS = [
