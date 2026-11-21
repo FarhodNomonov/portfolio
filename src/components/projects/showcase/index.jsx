@@ -40,7 +40,7 @@ const TABS = [
     titleId: "projects.tab.lead",
     Screen: LeadershipScreen,
     canvas: LAPTOP,
-    points: ["projects.lead.p1", "projects.lead.p2"],
+    points: ["projects.lead.p1", "projects.lead.p2", "projects.lead.p3"],
   },
   {
     key: "parent",
