@@ -9,15 +9,19 @@ import { CLIENT_NAME } from "../../data/crm";
 // soon as the visitor hovers or focuses its switch, or right away via the hash.
 const loadCrm = () => import("./crm");
 const CrmCase = lazy(loadCrm);
+const loadVoxly = () => import("./voxly");
+const VoxlyCase = lazy(loadVoxly);
 
 const EASE = [0.22, 1, 0.36, 1];
 
 // Each case has a hash, so a direct link can open it: #projects-crm.
 const CASES = [
   { key: "stanford", hash: "#projects" },
-  { key: "crm", hash: "#projects-crm" },
+  { key: "crm", hash: "#projects-crm", load: loadCrm },
+  { key: "voxly", hash: "#projects-voxly", load: loadVoxly },
 ];
-const fromHash = () => (window.location.hash === "#projects-crm" ? 1 : 0);
+const fromHash = () => Math.max(0, CASES.findIndex((c) => c.hash === window.location.hash));
+const isCaseHash = () => CASES.slice(1).some((c) => c.hash === window.location.hash);
 
 export function useCrmTitle() {
   const intl = useIntl();
@@ -39,11 +43,11 @@ export default function Projects() {
   // Follow hash links (e.g. the Services card) and open the case they name.
   useEffect(() => {
     const open = () => {
-      if (window.location.hash !== "#projects-crm") return;
-      setActive(1);
+      if (!isCaseHash()) return;
+      setActive(fromHash());
       document.getElementById("projects")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
     };
-    if (window.location.hash === "#projects-crm") {
+    if (isCaseHash()) {
       setActive(fromHash());
       // On first load the browser finds no #projects-crm element, so scroll here.
       requestAnimationFrame(() => document.getElementById("projects")?.scrollIntoView());
@@ -67,11 +71,11 @@ export default function Projects() {
     buttonsRef.current[next]?.focus();
   };
 
-  const labels = ["Stanford Weekly Test", crmTitle];
+  const labels = ["Stanford Weekly Test", crmTitle, "Voxly"];
 
   return (
     <div className="container-site">
-      <Reveal className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <Reveal className="flex flex-col gap-8">
         <div>
           <h2 className="eyebrow">
             03 · <FormattedMessage id="nav.projects" />
@@ -86,11 +90,11 @@ export default function Projects() {
           role="tablist"
           aria-label={intl.formatMessage({ id: "projects.switch.label" })}
           onKeyDown={onKeyDown}
-          className="relative grid w-full grid-cols-2 rounded-full border border-line bg-surface p-1 sm:w-auto"
+          className="relative grid w-full grid-cols-3 rounded-full border border-line bg-surface p-1 sm:w-auto"
         >
           <span
             aria-hidden="true"
-            className="absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-ink transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
+            className="absolute inset-y-1 left-1 w-[calc((100%-8px)/3)] rounded-full bg-ink transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
             style={{ transform: `translateX(${active * 100}%)` }}
           />
           {CASES.map((c, i) => (
@@ -104,9 +108,9 @@ export default function Projects() {
               aria-controls="case-panel"
               tabIndex={active === i ? 0 : -1}
               onClick={() => select(i)}
-              onPointerEnter={c.key === "crm" ? loadCrm : undefined}
-              onFocus={c.key === "crm" ? loadCrm : undefined}
-              className={`relative z-10 min-h-11 rounded-full px-3 py-2 text-[13px] font-semibold leading-tight transition-colors duration-300 sm:px-6 sm:text-sm ${
+              onPointerEnter={c.load}
+              onFocus={c.load}
+              className={`relative z-10 min-h-11 rounded-full px-2 py-2 text-[13px] font-semibold leading-tight sm:whitespace-nowrap transition-colors duration-300 sm:px-6 sm:text-sm ${
                 active === i ? "text-bg" : "text-muted hover:text-ink"
               }`}
             >
@@ -129,7 +133,7 @@ export default function Projects() {
               <StanfordCase />
             ) : (
               <Suspense fallback={<div className="min-h-screen" />}>
-                <CrmCase title={crmTitle} />
+                {active === 1 ? <CrmCase title={crmTitle} /> : <VoxlyCase />}
               </Suspense>
             )}
           </m.div>
